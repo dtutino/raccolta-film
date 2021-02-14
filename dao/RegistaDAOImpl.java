@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.StringUtils;
 
+import it.prova.raccoltafilm.model.Film;
 import it.prova.raccoltafilm.model.Regista;
 
 public class RegistaDAOImpl implements RegistaDAO {
@@ -29,13 +30,21 @@ public class RegistaDAOImpl implements RegistaDAO {
 
 	@Override
 	public Optional<Regista> findOne(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Regista registaResult = entityManager.find(Regista.class, id);
+
+		if (registaResult == null)
+			return Optional.empty();
+
+		return Optional.of(registaResult);
 	}
 
 	@Override
 	public void update(Regista o) throws Exception {
-		// TODO Auto-generated method stub
+		if (o == null) {
+			throw new Exception("Problema valore in input");
+		}
+
+		entityManager.merge(o);
 
 	}
 
@@ -49,7 +58,10 @@ public class RegistaDAOImpl implements RegistaDAO {
 
 	@Override
 	public void delete(Regista o) throws Exception {
-		// TODO Auto-generated method stub
+		if (o == null) {
+			throw new Exception("Problema valore in input");
+		}
+		entityManager.remove(entityManager.merge(o));
 
 	}
 
@@ -81,8 +93,8 @@ public class RegistaDAOImpl implements RegistaDAO {
 			whereClauses.add("r.dataDiNascita = :dataDiNascita ");
 			paramaterMap.put("dataDiNascita", example.getDataDiNascita());
 		}
-		
-		queryBuilder.append(!whereClauses.isEmpty()?" and ":"");
+
+		queryBuilder.append(!whereClauses.isEmpty() ? " and " : "");
 		queryBuilder.append(StringUtils.join(whereClauses, " and "));
 		TypedQuery<Regista> typedQuery = entityManager.createQuery(queryBuilder.toString(), Regista.class);
 

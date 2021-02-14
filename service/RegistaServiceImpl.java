@@ -39,8 +39,22 @@ public class RegistaServiceImpl implements RegistaService {
 
 	@Override
 	public Regista caricaSingoloElemento(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		// questo è come una connection
+		EntityManager entityManager = LocalEntityManagerFactoryListener.getEntityManager();
+
+		try {
+			// uso l'injection per il dao
+			registaDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			return registaDAO.findOne(id).get();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			LocalEntityManagerFactoryListener.closeEntityManager(entityManager);
+		}
 	}
 
 	@Override
@@ -51,8 +65,27 @@ public class RegistaServiceImpl implements RegistaService {
 
 	@Override
 	public void aggiorna(Regista registaInstance) throws Exception {
-		// TODO Auto-generated method stub
+		// questo è come una connection
+		EntityManager entityManager = LocalEntityManagerFactoryListener.getEntityManager();
 
+		try {
+			// questo è come il MyConnection.getConnection()
+			entityManager.getTransaction().begin();
+
+			// uso l'injection per il dao
+			registaDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			registaDAO.update(registaInstance);
+
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			LocalEntityManagerFactoryListener.closeEntityManager(entityManager);
+		}
 	}
 
 	@Override
@@ -82,8 +115,24 @@ public class RegistaServiceImpl implements RegistaService {
 
 	@Override
 	public void rimuovi(Regista registaInstance) throws Exception {
-		// TODO Auto-generated method stub
+		EntityManager entityManager = LocalEntityManagerFactoryListener.getEntityManager();
 
+		try {
+			// questo è come il MyConnection.getConnection()
+			entityManager.getTransaction().begin();
+
+			// uso l'injection per il dao
+			registaDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			registaDAO.delete(registaInstance);
+
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 	@Override

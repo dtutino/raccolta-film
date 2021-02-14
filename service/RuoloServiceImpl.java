@@ -14,8 +14,22 @@ public class RuoloServiceImpl implements RuoloService {
 
 	@Override
 	public List<Ruolo> listAll() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		// questo è come una connection
+		EntityManager entityManager = LocalEntityManagerFactoryListener.getEntityManager();
+
+		try {
+			// uso l'injection per il dao
+			ruoloDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			return ruoloDAO.list();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			LocalEntityManagerFactoryListener.closeEntityManager(entityManager);
+		}
 	}
 
 	@Override
@@ -40,8 +54,27 @@ public class RuoloServiceImpl implements RuoloService {
 
 	@Override
 	public void aggiorna(Ruolo ruoloInstance) throws Exception {
-		// TODO Auto-generated method stub
+		// questo è come una connection
+		EntityManager entityManager = LocalEntityManagerFactoryListener.getEntityManager();
 
+		try {
+			// questo è come il MyConnection.getConnection()
+			entityManager.getTransaction().begin();
+
+			// uso l'injection per il dao
+			ruoloDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			ruoloDAO.update(ruoloInstance);
+
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			LocalEntityManagerFactoryListener.closeEntityManager(entityManager);
+		}
 	}
 
 	@Override
@@ -72,8 +105,24 @@ public class RuoloServiceImpl implements RuoloService {
 
 	@Override
 	public void rimuovi(Ruolo ruoloInstance) throws Exception {
-		// TODO Auto-generated method stub
+		EntityManager entityManager = LocalEntityManagerFactoryListener.getEntityManager();
 
+		try {
+			// questo è come il MyConnection.getConnection()
+			entityManager.getTransaction().begin();
+
+			// uso l'injection per il dao
+			ruoloDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			ruoloDAO.delete(ruoloInstance);
+
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 	@Override
