@@ -22,6 +22,7 @@
           <a class="dropdown-item" href="${pageContext.request.contextPath}/home">Home</a>
           <a class="dropdown-item" href="${pageContext.request.contextPath}/PrepareSearchRegistaServlet">Ricerca Registi</a>
           <a class="dropdown-item" href="${pageContext.request.contextPath}/PrepareSearchFilmServlet">Ricerca Film</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/ExecuteListUtenteServlet">Lista Utenti</a>
         </div>
       </li>
     </ul>

@@ -18,6 +18,16 @@ public class UtilityForm {
 		}
 		return true;
 	}
+	
+	public static boolean validateRegistaFormInput(String usernameParam, String passwordParam,
+			String nomeParam, String cognomeParam, String dataCreazioneParam) {
+		// prima controlliamo che non siano vuoti
+		if (StringUtils.isBlank(usernameParam) || StringUtils.isBlank(passwordParam)
+				|| StringUtils.isBlank(nomeParam) || StringUtils.isBlank(cognomeParam) || StringUtils.isBlank(dataCreazioneParam)) {
+			return false;
+		}
+		return true;
+	}
 
 	public static boolean validateFilmFormInput(String titoloInputParam, String genereInputParam,
 			String minutiDurataInputParam, String dataPubblicazioneStringParam, String registaIdStringParam) {
